@@ -1,0 +1,80 @@
+
+> claude-agent-worker@1.0.0 dev
+> wrangler dev
+
+
+ ⛅️ wrangler 4.45.0
+───────────────────
+Using vars defined in .env
+Your Worker has access to the following bindings:
+Binding                                      Resource                  Mode
+env.AGENT_CONTAINER (AgentContainer)         Durable Object            local
+env.ANTHROPIC_API_KEY ("(hidden)")           Environment Variable      local
+env.ANTHROPIC_BASE_URL ("(hidden)")          Environment Variable      local
+env.API_KEY ("(hidden)")                     Environment Variable      local
+env.MODEL ("(hidden)")                       Environment Variable      local
+
+⎔ Preparing container image(s)...
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 665B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-alpine
+#2 DONE 1.7s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B 0.1s done
+#3 DONE 0.1s
+
+#4 [builder 1/6] FROM docker.io/library/node:20-alpine@sha256:6178e78b972f79c335df281f4b7674a2d85071aae2af020ffa39f0a770265435
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 230B 15.9s
+#5 transferring context: 401B 55.3s
+#5 transferring context: 403B 55.3s done
+#5 DONE 55.3s
+
+#6 [stage-1 5/7] COPY --from=builder /app/dist ./dist
+#6 CACHED
+
+#7 [stage-1 4/7] RUN npm ci --omit=dev
+#7 CACHED
+
+#8 [stage-1 6/7] COPY .claude ./.claude
+#8 CACHED
+
+#9 [builder 2/6] WORKDIR /app
+#9 CACHED
+
+#10 [builder 5/6] COPY container/server.ts container/tsconfig.json ./
+#10 CACHED
+
+#11 [builder 6/6] RUN npm run build
+#11 CACHED
+
+#12 [builder 3/6] COPY container/package.json container/package-lock.json* ./
+#12 CACHED
+
+#13 [builder 4/6] RUN npm ci
+#13 CACHED
+
+#14 [stage-1 7/7] RUN chown -R node:node /app
+#14 CACHED
+
+#15 exporting to image
+#15 exporting layers done
+#15 writing image sha256:24f2fee91c2d9d2cb2e73c62be569ba1a84cd84338c4d7ec4dd82c09c426a263 done
+#15 naming to docker.io/cloudflare-dev/agentcontainer:d1477800 done
+#15 DONE 0.0s
+⎔ Container image(s) ready
+⎔ Starting local server...
+[wrangler:info] Ready on http://localhost:8787
+Error checking if container is ready: The operation was aborted
+Port 8080 is ready
+[Container] Started { timestamp: '2025-10-27T05:27:00.930Z', port: 8080, sleepAfter: '5m' }
+[wrangler:info] POST /query 500 Internal Server Error (8414ms)
+⎔ Reloading local server...
+⎔ Reloading local server...

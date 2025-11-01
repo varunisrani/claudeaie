@@ -1,0 +1,16 @@
+{
+  "id": "kiro-agent",
+  "name": "Kiro Complete Workflow",
+  "version": "1.0.0",
+  "description": "Complete software development workflow from requirements to implementation",
+  "longDescription": "Executes a systematic 6-step workflow: Prime (project analysis) -> Spec Init -> Spec Requirements -> Spec Design -> Spec Tasks -> Spec Implementation. Generates structured documentation at each step and produces implementation code with progress tracking.",
+  "author": "Claude Agent SDK Team",
+  "capabilities": ["code-generation", "task-execution", "file-operations"],
+  "tags": ["workflow", "development", "spec", "documentation", "code-gen"],
+  "icon": "⚙️",
+  "color": "#7C3AED",
+  "maxTurns": 150,
+  "defaultModel": "claude-sonnet-4-5-20250929",
+  "systemPromptFile": "prompt.md",
+  "requiresMCP": false
+}

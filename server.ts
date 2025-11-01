@@ -40,6 +40,7 @@ export class AgentContainer extends Container {
 type Bindings = {
   AGENT_CONTAINER: DurableObjectNamespace<AgentContainer>;
   ANTHROPIC_API_KEY?: string;
+  ANTHROPIC_BASE_URL?: string;
   CLAUDE_CODE_OAUTH_TOKEN?: string;
   MODEL?: string;
   API_KEY: string;
@@ -54,6 +55,44 @@ app.get("/health", (c) => {
     hasContainer: !!c.env?.AGENT_CONTAINER,
     timestamp: new Date().toISOString(),
   });
+});
+
+app.get("/agents", async (c) => {
+  try {
+    const authHeader = c.req.header("Authorization");
+    const expectedToken = c.env.API_KEY;
+
+    if (!authHeader || authHeader !== `Bearer ${expectedToken}`) {
+      return c.json({ error: "Unauthorized" }, 401);
+    }
+
+    const accountId = "default";
+    const id = c.env.AGENT_CONTAINER.idFromName(accountId);
+    const instance = c.env.AGENT_CONTAINER.get(id);
+
+    await instance.startAndWaitForPorts({
+      ports: [8080],
+      startOptions: {
+        envVars: {
+          ANTHROPIC_API_KEY: c.env.ANTHROPIC_API_KEY || c.env.CLAUDE_CODE_OAUTH_TOKEN || "",
+          ANTHROPIC_BASE_URL: c.env.ANTHROPIC_BASE_URL || "",
+          MODEL: c.env.MODEL || "claude-sonnet-4-5",
+        },
+      },
+    });
+
+    const containerRes = await instance.fetch(
+      new Request("http://container.internal/agents", {
+        method: "GET",
+        headers: { "content-type": "application/json" }
+      })
+    );
+
+    return c.newResponse(containerRes.body, containerRes);
+  } catch (error: any) {
+    console.error("[Agents Error]", error);
+    return c.json({ error: error.message }, 500);
+  }
 });
 
 app.post("/query", async (c) => {
@@ -72,6 +111,9 @@ app.post("/query", async (c) => {
     const body = await c.req.json().catch(() => ({}));
     const prompt = body.query || body.prompt;
     const accountId = body.accountId || "default";
+    const agentId = body.agentId;
+    const taskId = body.taskId;
+    const parameters = body.parameters;
 
     if (!prompt) {
       return c.json({ error: "No prompt provided" }, 400);
@@ -85,6 +127,7 @@ app.post("/query", async (c) => {
       startOptions: {
         envVars: {
           ANTHROPIC_API_KEY: c.env.ANTHROPIC_API_KEY || c.env.CLAUDE_CODE_OAUTH_TOKEN || "",
+          ANTHROPIC_BASE_URL: c.env.ANTHROPIC_BASE_URL || "",
           MODEL: c.env.MODEL || "claude-sonnet-4-5",
         },
       },
@@ -94,7 +137,12 @@ app.post("/query", async (c) => {
       new Request("http://container.internal/run", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ prompt })
+        body: JSON.stringify({
+          prompt,
+          agentId,
+          taskId,
+          parameters
+        })
       })
     );
 

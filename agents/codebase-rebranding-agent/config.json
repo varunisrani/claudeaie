@@ -1,0 +1,16 @@
+{
+  "id": "codebase-rebranding-agent",
+  "name": "Codebase Rebranding Agent",
+  "version": "1.0.0",
+  "description": "Automates complete codebase rebranding with intelligent analysis and systematic replacement",
+  "longDescription": "Uses Claude Agent SDK to execute a 6-step rebranding workflow: clone repository, analyze brand elements, generate rebranding plan, apply changes, validate deployment, and create new repository. Handles company names, domains, colors, assets, and repository creation with GitHub CLI integration.",
+  "author": "Claude Agent SDK Team",
+  "capabilities": ["code-generation", "file-operations", "task-execution", "api-integration"],
+  "tags": ["rebranding", "refactoring", "git", "github", "automation", "brand-migration"],
+  "icon": "🎨",
+  "color": "#FF6B6B",
+  "maxTurns": 150,
+  "defaultModel": "claude-sonnet-4-5-20250929",
+  "systemPromptFile": "prompt.md",
+  "requiresMCP": false
+}

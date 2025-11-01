@@ -1,0 +1,28 @@
+{
+  "id": "nextjs-app-generator",
+  "name": "Next.js App Generator",
+  "version": "1.0.0",
+  "description": "Generates complete Next.js applications with TypeScript, Tailwind CSS, and modern React patterns",
+  "longDescription": "An intelligent agent that creates production-ready Next.js applications based on your requirements. It analyzes your needs, creates a detailed specification, and generates all necessary files including pages, components, API routes, and configuration.",
+  "author": "Anthropic",
+  "capabilities": [
+    "code-generation",
+    "file-operations",
+    "task-execution"
+  ],
+  "tags": [
+    "nextjs",
+    "react",
+    "typescript",
+    "tailwind",
+    "web-development",
+    "frontend",
+    "fullstack"
+  ],
+  "icon": "⚛️",
+  "color": "#000000",
+  "maxTurns": 200,
+  "defaultModel": "claude-3-5-sonnet-20241022",
+  "systemPromptFile": "prompt.md",
+  "requiresMCP": false
+}

@@ -103,6 +103,7 @@ This repo demonstrates how to set up [Agent Skills](https://docs.claude.com/en/d
 ```bash
 npm run deploy
 wrangler secret put ANTHROPIC_API_KEY  # Prompts for Anthropic API key
+wrangler secret put ANTHROPIC_BASE_URL  # Optional: custom API endpoint (e.g., https://api.z.ai/api/anthropic)
 wrangler secret put API_KEY  # Prompts for your API auth key
 wrangler secret put MODEL  # Optional: defaults to claude-sonnet-4-5
 ```
@@ -112,6 +113,7 @@ wrangler secret put MODEL  # Optional: defaults to claude-sonnet-4-5
 **Environment variables (.dev.vars for local, wrangler secret for production):**
 ```bash
 ANTHROPIC_API_KEY=sk-ant-...  # Get from https://console.anthropic.com/settings/keys
+ANTHROPIC_BASE_URL=https://api.anthropic.com  # Optional: custom API endpoint (defaults to https://api.anthropic.com)
 API_KEY=your-secret-key-here  # Your own API auth key for protecting the endpoint
 MODEL=claude-sonnet-4-5  # Optional, defaults to claude-sonnet-4-5
 ```

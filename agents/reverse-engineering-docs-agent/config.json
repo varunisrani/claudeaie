@@ -1,0 +1,17 @@
+{
+  "id": "reverse-engineering-docs-agent",
+  "name": "Reverse Engineering Docs Generator",
+  "version": "1.0.0",
+  "description": "Analyzes GitHub repositories and generates comprehensive documentation",
+  "longDescription": "Uses Claude Agent SDK to clone and analyze any GitHub repository, then generates 13+ markdown documentation files covering architecture, API, components, database schema, features, setup guide, and white-labeling strategy. Includes Mermaid diagrams for visualization.",
+  "author": "Claude Agent SDK Team",
+  "capabilities": ["code-generation", "code-review", "data-analysis", "file-operations"],
+  "tags": ["documentation", "reverse-engineering", "github", "analysis", "markdown", "architecture"],
+  "icon": "📚",
+  "color": "#4A90E2",
+  "maxTurns": 200,
+  "defaultModel": "claude-sonnet-4-5-20250929",
+  "systemPromptFile": "prompt.md",
+  "requiresMCP": false,
+  "mcpServers": []
+}

@@ -1,0 +1,32 @@
+{
+  "tasks": [
+    {
+      "title": "get me best tweets",
+      "description": "get me best tweets",
+      "status": "completed",
+      "agentId": "xresearch-agent",
+      "assignedTo": "agent",
+      "id": "0043cf0c-0eee-4ebb-b0d2-d425e690d073",
+      "agentResponse": "X Research Complete!\n\nTopic: get me best tweets\n\nget me best tweets\nTarget: 100 tweets\nCollected: 0 tweets\n\nSession ID: b1682412-861e-4ad2-9068-06926879e4d1\nDuration: 16.57s\nTotal Cost: $0.0652\n\nTool Usage:\n  - Bash: 3 calls\n  - Read: 1 calls\n  - TodoWrite: 3 calls",
+      "agentStatus": "success",
+      "logs": [
+        {
+          "id": "4e9f9289-5c1a-45b0-b2b4-332074b25ae5",
+          "taskId": "0043cf0c-0eee-4ebb-b0d2-d425e690d073",
+          "timestamp": "2025-11-01T00:21:05.916Z",
+          "level": "info",
+          "message": "Starting agent execution with xresearch-agent..."
+        },
+        {
+          "id": "0bcd85c5-2026-4c22-8109-e75852028386",
+          "taskId": "0043cf0c-0eee-4ebb-b0d2-d425e690d073",
+          "timestamp": "2025-11-01T00:21:22.495Z",
+          "level": "success",
+          "message": "Agent execution completed successfully"
+        }
+      ],
+      "createdAt": "2025-11-01T00:21:03.203Z",
+      "updatedAt": "2025-11-01T00:21:22.533Z"
+    }
+  ]
+}

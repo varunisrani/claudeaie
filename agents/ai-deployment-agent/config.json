@@ -1,0 +1,28 @@
+{
+  "id": "ai-deployment-agent",
+  "name": "AI Deployment Agent",
+  "version": "1.0.0",
+  "description": "Automates GitHub repository setup and Vercel deployment with intelligent build error fixing",
+  "longDescription": "A comprehensive AI-powered deployment agent that automates the entire process of setting up GitHub repositories, configuring Vercel projects, building applications, and deploying to production with intelligent error fixing. Supports both new and existing projects.",
+  "author": "Anthropic",
+  "capabilities": [
+    "task-execution",
+    "code-generation",
+    "api-integration",
+    "file-operations"
+  ],
+  "tags": [
+    "deployment",
+    "github",
+    "vercel",
+    "devops",
+    "automation",
+    "ci-cd"
+  ],
+  "icon": "🚀",
+  "color": "#0070F3",
+  "maxTurns": 150,
+  "defaultModel": "claude-3-5-sonnet-20241022",
+  "systemPromptFile": "prompt.md",
+  "requiresMCP": false
+}

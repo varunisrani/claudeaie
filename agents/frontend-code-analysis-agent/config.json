@@ -1,0 +1,16 @@
+{
+  "id": "frontend-code-analysis-agent",
+  "name": "Frontend Code Analysis Agent",
+  "version": "1.0.0",
+  "description": "Analyzes React/Vue/Angular/Next.js applications and generates comprehensive Playwright test plans",
+  "longDescription": "Uses Claude Agent SDK to analyze frontend codebases through a 5-step workflow: Scan Codebase → Analyze Pages/Flows → Identify Components → Map Interactions → Generate Test Plan. Produces 5 detailed documentation files and comprehensive Playwright test specifications for all major frontend frameworks.",
+  "author": "Claude Agent SDK Team",
+  "capabilities": ["code-review", "data-analysis", "file-operations", "task-execution"],
+  "tags": ["frontend", "testing", "playwright", "react", "vue", "angular", "nextjs", "code-analysis"],
+  "icon": "🎨",
+  "color": "#61DAFB",
+  "maxTurns": 100,
+  "defaultModel": "claude-sonnet-4-5-20250929",
+  "systemPromptFile": "prompt.md",
+  "requiresMCP": false
+}

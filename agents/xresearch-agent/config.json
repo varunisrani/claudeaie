@@ -1,0 +1,17 @@
+{
+  "id": "xresearch-agent",
+  "name": "X Research Agent",
+  "version": "1.0.0",
+  "description": "Collects and analyzes tweets from X (Twitter) using Rube MCP",
+  "longDescription": "Uses Claude Agent SDK with MCP integration to search X and collect 100+ tweets on any topic. Includes real-time progress tracking, cost analysis, and structured data export.",
+  "author": "Claude Agent SDK Team",
+  "capabilities": ["web-research", "data-analysis", "api-integration"],
+  "tags": ["twitter", "x", "social-media", "research", "data-collection", "mcp"],
+  "icon": "🐦",
+  "color": "#1DA1F2",
+  "maxTurns": 100,
+  "defaultModel": "claude-sonnet-4-5-20250929",
+  "systemPromptFile": "prompt.md",
+  "requiresMCP": true,
+  "mcpServers": ["rube"]
+}

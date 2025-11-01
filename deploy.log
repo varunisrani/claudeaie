@@ -1,0 +1,77 @@
+
+> claude-agent-worker@1.0.0 deploy
+> wrangler deploy
+
+
+ ⛅️ wrangler 4.45.0
+───────────────────
+Total Upload: 103.76 KiB / gzip: 25.42 KiB
+Worker Startup Time: 16 ms
+Your Worker has access to the following bindings:
+Binding                                   Resource            
+env.AGENT_CONTAINER (AgentContainer)      Durable Object      
+
+Uploaded claude-agent-worker (8.58 sec)
+Building image claude-agent-worker-agentcontainer:243e602f
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 665B done
+#1 DONE 0.0s
+
+#2 [auth] library/node:pull token for registry-1.docker.io
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:20-alpine
+#3 DONE 2.1s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B 0.1s done
+#4 DONE 0.1s
+
+#5 [builder 1/6] FROM docker.io/library/node:20-alpine@sha256:6178e78b972f79c335df281f4b7674a2d85071aae2af020ffa39f0a770265435
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 230B 16.8s
+#6 transferring context: 401B 52.4s
+#6 transferring context: 403B 52.4s done
+#6 DONE 52.5s
+
+#7 [builder 2/6] WORKDIR /app
+#7 CACHED
+
+#8 [builder 3/6] COPY container/package.json container/package-lock.json* ./
+#8 CACHED
+
+#9 [builder 6/6] RUN npm run build
+#9 CACHED
+
+#10 [builder 5/6] COPY container/server.ts container/tsconfig.json ./
+#10 CACHED
+
+#11 [stage-1 5/7] COPY --from=builder /app/dist ./dist
+#11 CACHED
+
+#12 [stage-1 4/7] RUN npm ci --omit=dev
+#12 CACHED
+
+#13 [builder 4/6] RUN npm ci
+#13 CACHED
+
+#14 [stage-1 6/7] COPY .claude ./.claude
+#14 CACHED
+
+#15 [stage-1 7/7] RUN chown -R node:node /app
+#15 CACHED
+
+#16 exporting to image
+#16 exporting layers done
+#16 writing image sha256:2b0cf42b84a765be8f18c7b37712b21096399ed5bba7eb03fdc5745e8b242505 done
+#16 naming to docker.io/library/claude-agent-worker-agentcontainer:243e602f done
+#16 DONE 0.0s
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mUnauthorized[0m
+
+
+🪵  Logs were written to "/root/.config/.wrangler/logs/wrangler-2025-10-27_06-03-22_563.log"

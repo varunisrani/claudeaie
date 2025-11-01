@@ -11,6 +11,6 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true
   },
-  "include": ["server.ts"],
+  "include": ["server.ts", "agents/**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }
