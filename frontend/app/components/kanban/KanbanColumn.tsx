@@ -19,6 +19,13 @@ export function KanbanColumn({ title, status, tasks, onEditTask, onDeleteTask }:
     id: status,
   });
 
+  console.log('[KanbanColumn] Column rendering:', {
+    title,
+    status,
+    taskCount: tasks.length,
+    isOver
+  });
+
   const getColumnColor = () => {
     switch (status) {
       case 'todo':
@@ -33,24 +40,24 @@ export function KanbanColumn({ title, status, tasks, onEditTask, onDeleteTask }:
   };
 
   return (
-    <div className="flex-1 min-w-[300px]">
-      <div className="mb-4">
-        <h2 className="font-semibold text-lg">{title}</h2>
-        <p className="text-sm text-muted-foreground">{tasks.length} tasks</p>
+    <div className="flex-1 min-w-[260px] sm:min-w-[300px] flex flex-col h-full">
+      <div className="mb-3 sm:mb-4 flex-shrink-0">
+        <h2 className="font-semibold text-sm sm:text-lg">{title}</h2>
+        <p className="text-xs sm:text-sm text-muted-foreground">{tasks.length} tasks</p>
       </div>
 
       <Card
         ref={setNodeRef}
-        className={`p-4 min-h-[400px] ${getColumnColor()} ${
+        className={`p-3 sm:p-4 flex-1 overflow-y-auto ${getColumnColor()} ${
           isOver ? 'bg-muted/50 ring-2 ring-primary' : ''
         } transition-colors`}
       >
         <SortableContext items={tasks.map(t => t.id)} strategy={verticalListSortingStrategy}>
-          <div className="space-y-3">
+          <div className="space-y-2 sm:space-y-3">
             {tasks.length === 0 ? (
-              <div className="text-center py-12 text-muted-foreground">
-                <p className="text-sm">No tasks yet</p>
-                <p className="text-xs mt-1">Drag tasks here or create a new one</p>
+              <div className="text-center py-6 sm:py-12 text-muted-foreground">
+                <p className="text-xs sm:text-sm">No tasks yet</p>
+                <p className="text-xs mt-1 sm:mt-2">Drag tasks here or create a new one</p>
               </div>
             ) : (
               tasks.map((task) => (

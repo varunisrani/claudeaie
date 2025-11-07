@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { findTaskById } from '@/lib/storage';
 
+export const dynamic = 'force-dynamic';
+
 /**
  * GET /api/agent/stream?taskId=xxx
  * Server-Sent Events (SSE) endpoint for streaming logs

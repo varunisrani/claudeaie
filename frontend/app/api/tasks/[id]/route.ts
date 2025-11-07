@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
-import { updateTask, deleteTask, findTaskById } from '@/lib/storage';
+import { getStorageProvider } from '@/lib/storage-interface';
 import { Task } from '@/lib/types';
+
+export const dynamic = 'force-dynamic';
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -14,8 +16,9 @@ export async function PUT(request: Request, { params }: RouteParams) {
   try {
     const { id } = await params;
     const updates: Partial<Task> = await request.json();
+    const storage = getStorageProvider();
 
-    const task = await updateTask(id, updates);
+    const task = await storage.updateTask(id, updates);
 
     if (!task) {
       return NextResponse.json(
@@ -35,13 +38,22 @@ export async function PUT(request: Request, { params }: RouteParams) {
 }
 
 /**
+ * PATCH /api/tasks/[id]
+ * Updates a task (alias for PUT)
+ */
+export async function PATCH(request: Request, { params }: RouteParams) {
+  return PUT(request, { params });
+}
+
+/**
  * DELETE /api/tasks/[id]
  * Deletes a task
  */
 export async function DELETE(request: Request, { params }: RouteParams) {
   try {
     const { id } = await params;
-    const success = await deleteTask(id);
+    const storage = getStorageProvider();
+    const success = await storage.deleteTask(id);
 
     if (!success) {
       return NextResponse.json(

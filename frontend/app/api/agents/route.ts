@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+
 const DOCKER_CONTAINER_URL = process.env.DOCKER_CONTAINER_URL || 'http://localhost:8787';
 const API_KEY = process.env.API_KEY || 'test-key';
 

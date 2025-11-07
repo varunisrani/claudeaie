@@ -3,6 +3,8 @@ import { AgentExecutionRequest, AgentExecutionResponse, DockerContainerResponse 
 import { updateTask } from '@/lib/storage';
 import { v4 as uuidv4 } from 'uuid';
 
+export const dynamic = 'force-dynamic';
+
 const DOCKER_CONTAINER_URL = 'http://localhost:8787';
 const MAX_RETRIES = 3;
 const TIMEOUT_MS = 120000; // 2 minutes
@@ -131,9 +133,7 @@ export async function POST(request: Request) {
 
     console.log('[API /agent/execute] Execution result:', {
       success: result.success,
-      hasResponse: !!result.response,
-      hasData: !!result.data,
-      hasLogs: !!result.logs
+      hasResponse: !!result.response
     });
 
     // Add success log

@@ -10,16 +10,28 @@ const DATA_FILE = path.join(DATA_DIR, 'tasks.json');
  */
 async function ensureDataFile(): Promise<void> {
   try {
+    console.log('[Storage] Ensuring data directory exists:', DATA_DIR);
     await fs.mkdir(DATA_DIR, { recursive: true });
+    console.log('[Storage] Data directory created/verified');
 
     try {
+      console.log('[Storage] Checking if data file exists:', DATA_FILE);
       await fs.access(DATA_FILE);
-    } catch {
+      console.log('[Storage] Data file already exists');
+    } catch (accessError) {
       // File doesn't exist, create it with empty tasks
+      console.log('[Storage] Data file does not exist, creating with empty tasks');
       await fs.writeFile(DATA_FILE, JSON.stringify({ tasks: [] }, null, 2));
+      console.log('[Storage] Data file created successfully');
     }
   } catch (error) {
-    console.error('Error ensuring data file:', error);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.error('[Storage] Error ensuring data file:', {
+      message: errorMessage,
+      dataDir: DATA_DIR,
+      dataFile: DATA_FILE,
+      error: error
+    });
     throw error;
   }
 }
@@ -29,12 +41,22 @@ async function ensureDataFile(): Promise<void> {
  */
 export async function readTasks(): Promise<Task[]> {
   try {
+    console.log('[Storage] Reading tasks from:', DATA_FILE);
     await ensureDataFile();
+    console.log('[Storage] Data file ensured, reading file...');
     const data = await fs.readFile(DATA_FILE, 'utf-8');
+    console.log('[Storage] File read successfully, parsing JSON...');
     const parsed: TasksData = JSON.parse(data);
+    console.log('[Storage] Tasks parsed successfully:', { count: parsed.tasks?.length || 0 });
     return parsed.tasks || [];
   } catch (error) {
-    console.error('Error reading tasks:', error);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.error('[Storage] Error reading tasks:', {
+      message: errorMessage,
+      dataFile: DATA_FILE,
+      dataDir: DATA_DIR,
+      error: error
+    });
     return [];
   }
 }

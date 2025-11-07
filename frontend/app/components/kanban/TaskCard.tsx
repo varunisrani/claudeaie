@@ -90,7 +90,10 @@ export function TaskCard({ task, onEdit, onDelete }: TaskCardProps) {
       className={`cursor-pointer hover:shadow-md transition-shadow ${
         isDragging ? 'shadow-lg ring-2 ring-primary' : ''
       }`}
-      onClick={() => setSelectedTask(task)}
+      onClick={() => {
+        console.log('[TaskCard] Card clicked - opening task details:', { taskId: task.id, title: task.title });
+        setSelectedTask(task);
+      }}
     >
       <CardHeader className="p-4 pb-2">
         <div className="flex items-start justify-between gap-2">
@@ -119,6 +122,7 @@ export function TaskCard({ task, onEdit, onDelete }: TaskCardProps) {
                 <DropdownMenuItem
                   onClick={(e) => {
                     e.stopPropagation();
+                    console.log('[TaskCard] Edit menu item clicked:', { taskId: task.id });
                     onEdit?.(task);
                   }}
                 >
@@ -135,6 +139,7 @@ export function TaskCard({ task, onEdit, onDelete }: TaskCardProps) {
                 <DropdownMenuItem
                   onClick={(e) => {
                     e.stopPropagation();
+                    console.log('[TaskCard] Delete menu item clicked:', { taskId: task.id });
                     onDelete?.(task.id);
                   }}
                   className="text-destructive"
@@ -160,6 +165,10 @@ export function TaskCard({ task, onEdit, onDelete }: TaskCardProps) {
             className="mt-3 w-full"
             onClick={(e) => {
               e.stopPropagation();
+              console.log('[TaskCard] View Agent Logs clicked:', {
+                taskId: task.id,
+                agentStatus: task.agentStatus
+              });
               setShowLogs(true);
             }}
           >

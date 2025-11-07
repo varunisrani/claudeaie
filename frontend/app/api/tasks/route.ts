@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
-import { readTasks, writeTasks } from '@/lib/storage';
+import { getStorageProvider } from '@/lib/storage-interface';
 import { Task } from '@/lib/types';
+
+export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/tasks
@@ -8,12 +10,21 @@ import { Task } from '@/lib/types';
  */
 export async function GET() {
   try {
-    const tasks = await readTasks();
+    console.log('[API] GET /api/tasks - Starting request');
+    const storage = getStorageProvider();
+    const tasks = await storage.readTasks();
+    console.log('[API] GET /api/tasks - Successfully read tasks:', { count: tasks.length });
     return NextResponse.json({ tasks });
   } catch (error) {
-    console.error('Error fetching tasks:', error);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorStack = error instanceof Error ? error.stack : '';
+    console.error('[API] GET /api/tasks - Error details:', {
+      message: errorMessage,
+      stack: errorStack,
+      error: error
+    });
     return NextResponse.json(
-      { error: 'Failed to fetch tasks' },
+      { error: 'Failed to fetch tasks', details: errorMessage },
       { status: 500 }
     );
   }
@@ -26,12 +37,10 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const task: Task = await request.json();
+    const storage = getStorageProvider();
+    const createdTask = await storage.createTask(task);
 
-    const tasks = await readTasks();
-    tasks.push(task);
-    await writeTasks(tasks);
-
-    return NextResponse.json({ task }, { status: 201 });
+    return NextResponse.json({ task: createdTask }, { status: 201 });
   } catch (error) {
     console.error('Error creating task:', error);
     return NextResponse.json(

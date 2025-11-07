@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { Task, TaskStatus } from './types';
+import { apiClient } from './api-client';
 import { v4 as uuidv4 } from 'uuid';
 
 interface KanbanStore {
@@ -23,16 +24,16 @@ export const useKanbanStore = create<KanbanStore>((set, get) => ({
   selectedTask: null,
   isLoading: false,
 
-  setTasks: (tasks) => set({ tasks }),
+  setTasks: (tasks) => {
+    console.log('[Store] Setting tasks manually:', { count: tasks.length });
+    set({ tasks });
+  },
 
   fetchTasks: async () => {
     console.log('[Store] Fetching tasks...');
     set({ isLoading: true });
     try {
-      const res = await fetch('/api/tasks');
-      console.log('[Store] Fetch response:', { status: res.status, ok: res.ok });
-      if (!res.ok) throw new Error('Failed to fetch tasks');
-      const data = await res.json();
+      const data = await apiClient.getTasks();
       console.log('[Store] Fetched tasks:', { count: data.tasks?.length || 0 });
       set({ tasks: data.tasks || [] });
     } catch (error) {
@@ -57,16 +58,7 @@ export const useKanbanStore = create<KanbanStore>((set, get) => ({
 
       console.log('[Store] New task object:', { id: newTask.id, agentId: newTask.agentId });
 
-      const res = await fetch('/api/tasks', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newTask)
-      });
-
-      console.log('[Store] Create task response:', { status: res.status, ok: res.ok });
-      if (!res.ok) throw new Error('Failed to create task');
-
-      const data = await res.json();
+      const data = await apiClient.createTask(newTask);
       console.log('[Store] Task created successfully:', { id: data.task.id });
       set({ tasks: [...get().tasks, data.task] });
     } catch (error) {
@@ -78,16 +70,7 @@ export const useKanbanStore = create<KanbanStore>((set, get) => ({
   updateTask: async (id, updates) => {
     console.log('[Store] Updating task:', { id, updates });
     try {
-      const res = await fetch(`/api/tasks/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updates)
-      });
-
-      console.log('[Store] Update task response:', { status: res.status, ok: res.ok });
-      if (!res.ok) throw new Error('Failed to update task');
-
-      const data = await res.json();
+      const data = await apiClient.updateTask(id, updates);
       console.log('[Store] Task updated successfully:', { id });
       set({
         tasks: get().tasks.map(task =>
@@ -107,12 +90,7 @@ export const useKanbanStore = create<KanbanStore>((set, get) => ({
 
   deleteTask: async (id) => {
     try {
-      const res = await fetch(`/api/tasks/${id}`, {
-        method: 'DELETE'
-      });
-
-      if (!res.ok) throw new Error('Failed to delete task');
-
+      await apiClient.deleteTask(id);
       set({
         tasks: get().tasks.filter(task => task.id !== id),
         selectedTask: get().selectedTask?.id === id ? null : get().selectedTask
@@ -124,8 +102,14 @@ export const useKanbanStore = create<KanbanStore>((set, get) => ({
   },
 
   moveTask: async (id, newStatus) => {
+    console.log('[Store] moveTask called:', { taskId: id, newStatus });
     const task = get().tasks.find(t => t.id === id);
-    if (!task) return;
+    if (!task) {
+      console.warn('[Store] Task not found for move:', id);
+      return;
+    }
+
+    console.log('[Store] Moving task from', task.status, 'to', newStatus);
 
     // Optimistic update
     set({
@@ -133,16 +117,20 @@ export const useKanbanStore = create<KanbanStore>((set, get) => ({
         t.id === id ? { ...t, status: newStatus, updatedAt: new Date().toISOString() } : t
       )
     });
+    console.log('[Store] Optimistic update applied');
 
     try {
       await get().updateTask(id, { status: newStatus });
+      console.log('[Store] Task move persisted successfully');
     } catch (error) {
+      console.error('[Store] Error moving task, reverting:', error);
       // Revert on error
       set({
         tasks: get().tasks.map(t =>
           t.id === id ? { ...t, status: task.status } : t
         )
       });
+      console.log('[Store] Reverted task to original status:', task.status);
     }
   },
 
@@ -177,20 +165,12 @@ export const useKanbanStore = create<KanbanStore>((set, get) => ({
         promptPreview: `${task.title.substring(0, 50)}...`
       });
 
-      const res = await fetch('/api/agent/execute', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          taskId: id,
-          agentId: task.agentId,
-          prompt: `${task.title}\n\n${task.description}`
-        })
+      const data = await apiClient.executeAgent({
+        taskId: id,
+        agentId: task.agentId,
+        prompt: `${task.title}\n\n${task.description}`
       });
 
-      console.log('[Store] Agent execution response:', { status: res.status, ok: res.ok });
-      if (!res.ok) throw new Error('Agent execution failed');
-
-      const data = await res.json();
       console.log('[Store] Agent execution result:', {
         success: data.success,
         hasResponse: !!data.response,
