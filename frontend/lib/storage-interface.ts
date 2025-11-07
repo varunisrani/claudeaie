@@ -25,7 +25,7 @@ export function getStorageProvider(): StorageProvider {
       storageProvider = createLocalStorage();
     }
   }
-  return storageProvider;
+  return storageProvider!;
 }
 
 export function resetStorageProvider() {
