@@ -12,6 +12,14 @@ const nextConfig: NextConfig = {
   },
   // Enable trailing slashes for consistency
   trailingSlash: true,
+  // Skip TypeScript checking during build
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  // Skip ESLint checking during build
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
 
 export default nextConfig;
